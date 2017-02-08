@@ -4,6 +4,10 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = TEXT("Collision");
 
+// Global Const Values
+const int winWidth = 1024;
+const int winHeight = 768;
+
 class RectMaker 
 {
 public :
@@ -14,6 +18,8 @@ public :
 	void init();
 	void SetMouseAxis(INT, INT);
 	void DrawRect();
+	void RectColorSelect();
+	bool IsRectColided();
 
 private :
 
@@ -21,6 +27,8 @@ private :
 
 	HWND m_hWnd;
 	HDC m_hdc;
+	HBRUSH m_OldBrush;
+	HBRUSH m_RectBrush;
 	POINT m_MouseAxis;
 
 };

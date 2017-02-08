@@ -24,15 +24,25 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE PrevhInstance, LPSTR lpszCmd
 	RegisterClass(&WndClass);
 
 	hWnd = CreateWindow(lpszClass, lpszClass, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+		0, 0, winWidth, winHeight,
 		NULL, (HMENU)NULL, hInstance, NULL);
 	ShowWindow(hWnd, nCmdShow);
 	rectMaker = new RectMaker(hWnd);
 
-	while (GetMessage(&Message, NULL, 0, 0))
+	while (true)
 	{
-		TranslateMessage(&Message);
-		DispatchMessage(&Message);
+		if (PeekMessage(&Message, NULL, 0, 0, PM_REMOVE))
+		{
+			if (Message.message == WM_QUIT)
+			{
+				break;
+			}
+			TranslateMessage(&Message);
+			DispatchMessage(&Message);
+		}
+		else
+		{
+		}
 	}
 
 	return (int)Message.wParam;
@@ -87,11 +97,57 @@ void RectMaker::DrawRect()
 	UpdateWindow(m_hWnd);
 
 	// Center Rect
+	RectColorSelect();
 	Rectangle(m_hdc, centRectX1, centRectY1, centRectX2, centRectY2);
 	
+	SelectObject(m_hdc, m_OldBrush);
+
 	// Mouse Rect
 	Rectangle(m_hdc, m_MouseAxis.x - mouseRectLength, m_MouseAxis.y - mouseRectLength,
 		m_MouseAxis.x + mouseRectLength, m_MouseAxis.y + mouseRectLength);
+
+
+	return;
+}
+
+bool RectMaker::IsRectColided()
+{
+	using namespace RECT_VALUE;
+
+	if (m_MouseAxis.x + mouseRectLength < centRectX1)
+	{
+		return false;
+	}
+	else if (m_MouseAxis.x - mouseRectLength > centRectX2)
+	{
+		return false;
+	}
+	else if (m_MouseAxis.y + mouseRectLength < centRectY1)
+	{
+		return false;
+	}
+	else if (m_MouseAxis.y - mouseRectLength > centRectY2)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void RectMaker::RectColorSelect()
+{
+	using namespace RECT_VALUE;
+
+	if (IsRectColided())
+	{
+		m_RectBrush = CreateSolidBrush(colideColor);
+	}
+	else
+	{
+		m_RectBrush = CreateSolidBrush(normalColor);
+	}
+
+	m_OldBrush = (HBRUSH)SelectObject(m_hdc, m_RectBrush);
 
 	return;
 }
