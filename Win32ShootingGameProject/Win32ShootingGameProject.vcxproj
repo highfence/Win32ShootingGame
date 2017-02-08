@@ -18,6 +18,12 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Class\Collision.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Class\Collision.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B75436B8-C70E-4467-98A1-6F0DF2AD551D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -145,12 +151,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Collision.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Collision.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
